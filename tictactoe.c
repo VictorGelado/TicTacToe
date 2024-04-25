@@ -100,13 +100,13 @@ int fillHash() {
     int winner = 0;
     int position;
     int verifyPosition;
-    int chechedFilledPositions;
 
     do {
         do { // Pede pro usuário escolher uma posicao valida da velha
             verifyPosition = 1;
             printf("Jogador %c, em qual posicao você deseja jogar? ", (whoseTurn == 1)? X: O);
             scanf("%d", &position);
+            while(getchar() != '\n'); 
 
             switch (position) {  // Verifica a posicao referente ao <hash>
                 case 1:
@@ -178,7 +178,7 @@ int fillHash() {
             } 
 
             whoseTurn = (whoseTurn == 1)? 2: 1;
-    } while (winner == 0); // (!(!(winner != 0) && checkFilledPositions()))
+    } while (winner == 0);
 
     whoseTurn = (winner == 0)? 1: winner; // Coloca o vencendor como sendo o proximo a jogar caso se inicie uma nova partida
 
@@ -223,13 +223,17 @@ void gameLoop() {
     int c = 1;
     int newCharacters = 2;
 
-    do {
+    do { 
+        // Verifica se o usuario quer escolher novos caractere
+
         printf("Gostaria de escolher caracteres para cada jogador?\n[1] Sim\n[2] Nao\n");
         scanf("%d", &newCharacters);
     } while (newCharacters > 2 || newCharacters < 1);
     
 
     if (newCharacters == 1) {
+        // Caso o usuario queira ele pode escolher os caracteres
+
         printf("Qual o caractere do 1? \n");
         scanf(" %c", &X);
 
@@ -239,23 +243,28 @@ void gameLoop() {
 
 
     do {
+        // Loop do jogo
+
         system("clear");
         display(3, 3, hash);
-        int winnerLoop = fillHash();
+        int winnerLoop = fillHash();  // Preenche o hash e retorna um vencendor (caso haja)
 
-        if (winnerLoop == 0) printf("O vencendor é a velha\n");
+        if (winnerLoop == 0) printf("O vencendor é a velha\n"); // Vereficacao
         else printf("O vencendor é %c\n", (oldWinner == 1)? X: O);
 
-        printf("Gostaria de jogar mais uma vez?\n[1] Sim\n[2] Nao\n");
-        
+
+        // Pergunta se o usuario
         do {
+            printf("Gostaria de jogar mais uma vez?\n[1] Sim\n[2] Nao\n");
             scanf("%d", &c);
         } while (c != 1 && c != 2);
     } while (c != 2);
 }
 
 
-void resetHashs() { // Reseta as matrizes para que o usuario possa jogar novamente
+void resetHashs() { 
+    // Reseta as matrizes para que o usuario possa jogar novamente
+
     int c, j;
 
     for (c = 0; c <= 2; c++) { 
@@ -267,6 +276,8 @@ void resetHashs() { // Reseta as matrizes para que o usuario possa jogar novamen
 }
 
 int checkFilledPositions() {
+    // Verifica se as posicoes estao todas preenchidas
+
     int c, j;
 
     for (c = 0; c <= 2; c++) { 
